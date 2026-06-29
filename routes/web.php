@@ -13,5 +13,5 @@ Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('login', [AuthController::class, 'login'])->name('login');
 
 Route::get('/',[HomeController::class, 'welcome']);
-Route::get('/feed', [PostController::class, 'index']);
+Route::get('/feed', [PostController::class, 'index'])->name('feed');
 Route::post('/createPost', [PostController::class,'createPost']);
