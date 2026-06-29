@@ -15,10 +15,10 @@
     </a>
 
     <div class="flex items-center space-x-4">
-        <a href="#" class="text-gray-600 hover:text-gray-900 font-semibold text-base px-4 py-2 rounded-full hover:bg-gray-100 transition duration-200">
+        <a href="{{route('show.register')}}" class="text-gray-600 hover:text-gray-900 font-semibold text-base px-4 py-2 rounded-full hover:bg-gray-100 transition duration-200">
             Join now
         </a>
-        <a href="#" class="text-blue-600 hover:text-blue-700 font-semibold text-base px-5 py-2 rounded-full border border-blue-600 hover:border-blue-700 hover:bg-blue-50 transition duration-200">
+        <a href="{{route('show.login')}}" class="text-blue-600 hover:text-blue-700 font-semibold text-base px-5 py-2 rounded-full border border-blue-600 hover:border-blue-700 hover:bg-blue-50 transition duration-200">
             Sign in
         </a>
     </div>
@@ -35,7 +35,7 @@
         </p>
 
         <div class="pt-4">
-            <a href="#" class="inline-flex items-center space-x-3 bg-blue-600 hover:bg-blue-700 text-white font-medium text-lg px-8 py-3.5 rounded-full shadow-md hover:shadow-lg transition duration-200 w-full sm:w-auto justify-center">
+            <a href="{{route('show.register')}}" class="inline-flex items-center space-x-3 bg-blue-600 hover:bg-blue-700 text-white font-medium text-lg px-8 py-3.5 rounded-full shadow-md hover:shadow-lg transition duration-200 w-full sm:w-auto justify-center">
                 <span>Get Started</span>
                 <i class="fa-solid fa-arrow-right text-sm"></i>
             </a>
