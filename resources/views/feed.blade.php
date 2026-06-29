@@ -7,8 +7,8 @@
             <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
                 <div class="h-16 bg-blue-600"></div>
                 <div class="px-4 pb-4 text-center -mt-8">
-                    <img src="https://via.placeholder.com/150" alt="Avatar" class="w-16 h-16 rounded-full border-2 border-white mx-auto object-cover bg-white">
-                    <h2 class="font-bold text-gray-800 mt-2">Logged In User</h2>
+                    <img src="{{Auth::User()->image_url}}" alt="Avatar" class="w-16 h-16 rounded-full border-2 border-white mx-auto object-cover bg-white">
+                    <h2 class="font-bold text-gray-800 mt-2">{{Auth::User()->name}}</h2>
                     <p class="text-xs text-gray-500 mt-1">Developer open to work</p>
                 </div>
             </div>

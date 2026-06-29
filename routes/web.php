@@ -8,10 +8,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('register', [AuthController::class, 'showRegister'])->name('show.register');
 Route::get('login', [AuthController::class, 'showLogin'])->name('show.login');
 
-
 Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('login', [AuthController::class, 'login'])->name('login');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/',[HomeController::class, 'welcome']);
-Route::get('/feed', [PostController::class, 'index'])->name('feed');
-Route::post('/createPost', [PostController::class,'createPost']);
+Route::get('home',[HomeController::class, 'welcome'])->name('home');
+Route::get('feed', [PostController::class, 'index'])->name('feed');
+Route::post('createPost', [PostController::class,'createPost']);
