@@ -12,6 +12,6 @@ class PostsTableSeeder extends Seeder
     {
         User::factory(10)->create();
 
-        $this->command->info('✅ Created 10 user: ');
+        $this->command->info('✅ Created 10 posts: ');
     }
 }
