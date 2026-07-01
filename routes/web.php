@@ -15,4 +15,4 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/',[HomeController::class, 'welcome']);
 Route::get('home',[HomeController::class, 'welcome'])->name('home');
 Route::get('feed', [PostController::class, 'index'])->name('feed');
-Route::post('createPost', [PostController::class,'createPost']);
+Route::post('createPost', [PostController::class,'createPost'])->name('create.post');

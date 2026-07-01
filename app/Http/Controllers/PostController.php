@@ -11,7 +11,13 @@ class PostController extends Controller
         $posts = Post::latest()->get();
         return view('feed',['posts' => $posts]);
     }
-    public function createPost(){
+    public function createPost(Request $request){
+        $validated = $request->validate([
+            'content' => 'required|min:10',
+            'user_id' => 'required'
+        ]);
 
+        $post = Post::create($validated);
+        return redirect()->route('feed');
     }
 }
