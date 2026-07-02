@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -19,5 +20,16 @@ class PostController extends Controller
 
         $post = Post::create($validated);
         return redirect()->route('feed');
+    }
+
+    public function deletePost(Post $post){
+        if (Auth::id() !== $post->user_id) {
+            abort(403, 'You are not authorized to delete this post.');
+        }
+
+        $post->delete();
+
+        return redirect()->route('feed')
+            ->with('success', 'Post deleted successfully!');
     }
 }
