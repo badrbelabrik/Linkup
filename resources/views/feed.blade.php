@@ -174,7 +174,9 @@
                                     Cancel
                                 </button>
 
-                                <form action="{{route('delete.post')}}" method="DELETE">
+                                <form action="{{route('delete.post',$post)}}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
                                     <button type="submit"
                                             class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-sm transition cursor-pointer">
                                         Delete
