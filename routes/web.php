@@ -16,3 +16,5 @@ Route::get('/',[HomeController::class, 'welcome']);
 Route::get('home',[HomeController::class, 'welcome'])->name('home');
 Route::get('feed', [PostController::class, 'index'])->name('feed');
 Route::post('createPost', [PostController::class,'createPost'])->name('create.post');
+Route::delete('deletepost/{id}',[PostController::class,'deletePost'])->name('delete.post');
+Route::put('/posts/{id}', [PostController::class, 'editPost'])->name('posts.update');

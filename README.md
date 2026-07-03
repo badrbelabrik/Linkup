@@ -2,26 +2,54 @@
 
 ## Description
 
-LinkUp is a Laravel web application that reproduces the core features of a professional social network. This project was developed as part of a learning brief to practice Laravel, the MVC architecture, and Eloquent ORM.
+LinkUp is a Laravel web application inspired by LinkedIn. The goal of this project is to build a secure professional social network by implementing authentication, post management, data validation, and authorization while following Laravel's best practices and the MVC architecture.
+
+---
 
 ## Features
 
-- Display the news feed (`/feed`)
-- Show posts from newest to oldest
-- Display the author's information:
+### Authentication
+
+- User registration
+- User login
+- User logout
+- Automatic login after registration
+- Password hashing
+- Session management
+
+### News Feed
+
+- Protected `/feed` route
+- Display all posts from newest to oldest
+- Display author's:
   - Name
   - Headline
-  - Profile picture (or placeholder)
-- Eloquent relationships between `User` and `Post`
+  - Profile picture
+
+### Post Management
+
+- Create a new post
+- Validate posts using a Form Request
+- Only authenticated users can publish posts
+
+### Authorization
+
+- Only the owner of a post can edit it
+- Only the owner of a post can delete it
+- Unauthorized users receive a **403 Forbidden** response
+- Edit and Delete buttons are displayed only to the owner of the post
+
+---
 
 ## Technologies
 
-- PHP
-- Laravel
+- PHP 8+
+- Laravel 13
 - Blade
 - Eloquent ORM
 - MySQL
-- HTML/CSS
+- Tailwind CSS
+- Alpine.js
 - Git & GitHub
 - JIRA
 
@@ -32,20 +60,32 @@ LinkUp is a Laravel web application that reproduces the core features of a profe
 ```text
 app/
 ├── Http/
-│   └── Controllers/
-│       └── PostController.php
+│   ├── Controllers/
+│   │   ├── AuthController.php
+│   │   └── PostController.php
+│   ├── Requests/
+│   │   └── StorePostRequest.php
+│
 ├── Models/
 │   ├── User.php
 │   └── Post.php
+│
+├── Policies/
+│   └── PostPolicy.php
 
 database/
-└── migrations/
+├── migrations/
+├── factories/
+└── seeders/
 
 resources/
 └── views/
-    ├── feed.blade.php
-    └── layouts/
-        └── app.blade.php
+    ├── auth/
+    │   ├── login.blade.php
+    │   └── register.blade.php
+    ├── layouts/
+    │   └── app.blade.php
+    └── feed.blade.php
 
 routes/
 └── web.php
@@ -55,56 +95,62 @@ routes/
 
 ## Installation
 
-### 1. Clone the repository
+### Clone the repository
 
 ```bash
 git clone <repository-url>
 ```
 
-### 2. Go to the project directory
+### Enter the project
 
 ```bash
 cd LinkUp
 ```
 
-### 3. Install dependencies
+### Install dependencies
 
 ```bash
 composer install
 ```
 
-### 4. Create the environment file
+### Create the environment file
 
 ```bash
 cp .env.example .env
 ```
 
-### 5. Generate the application key
+### Generate the application key
 
 ```bash
 php artisan key:generate
 ```
 
-### 6. Configure your database
+### Configure the database
 
-Edit the `.env` file and update your database credentials.
+Update the database credentials inside the `.env` file.
 
-### 7. Run the migrations
+### Run the migrations
 
 ```bash
 php artisan migrate
 ```
 
-### 8. Start the development server
+### (Optional) Seed the database
+
+```bash
+php artisan db:seed
+```
+
+### Start the server
 
 ```bash
 php artisan serve
 ```
 
-Open your browser and visit:
+Visit:
 
 ```
-http://127.0.0.1:8000/feed
+http://127.0.0.1:8000
 ```
 
 ---
@@ -114,19 +160,21 @@ http://127.0.0.1:8000/feed
 ### Users
 
 | Column | Type |
-|--------|------|
+|---------|------|
 | id | bigint |
 | name | string |
-| email | string |
+| email | string (unique) |
 | password | string |
 | headline | string |
 | company | string (nullable) |
-| image_url | string |
+| image_url | string (nullable) |
+| created_at | timestamp |
+| updated_at | timestamp |
 
 ### Posts
 
 | Column | Type |
-|--------|------|
+|---------|------|
 | id | bigint |
 | user_id | foreign key |
 | content | text |
@@ -157,17 +205,78 @@ public function user()
 
 ---
 
-## Application Workflow
+## Security
 
-1. The user accesses `/feed`.
-2. The route calls `PostController@index`.
-3. The controller retrieves all posts using Eloquent.
-4. Posts are sorted from newest to oldest.
-5. The controller passes the data to the Blade view.
-6. The view displays each post along with its author's information.
+### Authentication
+
+- Registration
+- Login
+- Logout
+- Password hashing using Laravel's `Hash` facade
+
+### Route Protection
+
+Protected routes use the `auth` middleware.
+
+Examples:
+
+- `/feed`
+- `/posts/create`
+- `/posts/{post}/edit`
+- `/posts/{post}/delete`
+
+Unauthenticated users are redirected to the login page.
+
+### Form Requests
+
+Post validation is centralized in:
+
+```
+StorePostRequest
+```
+
+Validation rules:
+
+- `content` is required
+- Minimum 10 characters
+
+### Authorization
+
+A `PostPolicy` ensures that only the owner of a post can:
+
+- Edit a post
+- Delete a post
+
+Blade uses:
+
+```blade
+@can('update', $post)
+```
+
+and
+
+```blade
+@can('delete', $post)
+```
+
+to display action buttons only to authorized users.
+
+---
+
+## Testing
+
+The project has been tested for:
+
+- User registration
+- User login/logout
+- Route protection
+- Post creation
+- Form validation
+- Authorization
+- Unauthorized access (403 Forbidden)
 
 ---
 
 ## Author
 
-This project was developed as part of the **LinkUp** Laravel learning brief.
+Developed as part of the **LinkUp** Laravel learning project.
