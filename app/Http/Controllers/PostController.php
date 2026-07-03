@@ -22,7 +22,8 @@ class PostController extends Controller
         return redirect()->route('feed');
     }
 
-    public function deletePost(Post $post){
+    public function deletePost($id){
+        $post = Post::findorfail($id);
         if (Auth::id() !== $post->user_id) {
             abort(403, 'You are not authorized to delete this post.');
         }

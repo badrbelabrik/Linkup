@@ -174,7 +174,7 @@
                                     Cancel
                                 </button>
 
-                                <form action="{{route('delete.post',$post)}}" method="POST">
+                                <form action="{{route('delete.post',$post->id)}}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
