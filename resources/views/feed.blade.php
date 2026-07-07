@@ -46,7 +46,7 @@
                         </button>
                     </div>
 
-                    <form action="{{route('create.post')}}" method="POST" class="p-6 space-y-4">
+                    <form action="{{ route('create.post') }}" method="POST" class="p-6 space-y-4">
                         @csrf
                         <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
 
@@ -108,7 +108,7 @@
                         </button>
                     </div>
 
-                    <form :action="'/posts/' + editPostId" method="POST" class="p-6 space-y-4">
+                    <form action="{{ route('posts.update', $post->id ?? 0) }}" method="POST" class="p-6 space-y-4">
                         @csrf
                         @method('PUT')
 
@@ -170,7 +170,6 @@
                                  alt="Avatar">
 
                             <div>
-                                <!-- ✅ REMOVED profile link - just plain text -->
                                 <h3 class="font-bold text-gray-900">{{ $post->user->name }}</h3>
                                 <p class="text-xs text-gray-500 leading-tight">{{ $post->user->headline }}</p>
                                 <p class="text-[11px] text-gray-400 mt-0.5">
@@ -230,7 +229,7 @@
 
                     <!-- COMMENT FORM -->
                     <div class="mt-3 pt-3 border-t border-gray-100">
-                        <form action="{{ route('comments.store', $post) }}" method="POST" class="flex gap-2">
+                        <form action="{{ route('create.comment', $post) }}" method="POST" class="flex gap-2">
                             @csrf
                             <div class="flex-1 relative">
                                 <input type="text"
@@ -258,14 +257,12 @@
                         <div class="mt-3 space-y-3">
                             @foreach($post->comments as $comment)
                                 <div class="flex items-start gap-2">
-                                    <!-- ✅ REMOVED profile link from avatar -->
                                     <img src="{{ $comment->user->image_url ?? 'https://via.placeholder.com/150' }}"
                                          alt="{{ $comment->user->name }}"
                                          class="w-8 h-8 rounded-full object-cover">
                                     <div class="flex-1 bg-gray-100 rounded-lg px-3 py-2">
                                         <div class="flex items-center justify-between">
                                             <div>
-                                                <!-- ✅ REMOVED profile link - just plain text -->
                                                 <span class="font-semibold text-sm">{{ $comment->user->name }}</span>
                                                 <span class="text-xs text-gray-500 ml-2">{{ $comment->created_at->diffForHumans() }}</span>
                                             </div>
@@ -339,7 +336,7 @@
                                     Cancel
                                 </button>
 
-                                <form action="{{route('delete.post',$post->id)}}" method="POST">
+                                <form action="{{ route('delete.post', $post->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
