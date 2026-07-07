@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\NetworkController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -27,3 +28,7 @@ Route::post('/posts/{post}/like', [LikeController::class, 'toggle'])->name('like
 Route::get('/users/{user}', [ProfileController::class, 'show'])->name('profile.show');
 Route::post('/users/{user}/follow', [NetworkController::class, 'follow'])->name('follow');
 Route::post('/users/{user}/unfollow', [NetworkController::class, 'unfollow'])->name('unfollow');
+
+Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+Route::post('/profile/image', [ProfileController::class, 'uploadImage'])->name('profile.image.upload');
