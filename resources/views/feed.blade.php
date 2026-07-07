@@ -46,7 +46,7 @@
                         </button>
                     </div>
 
-                    <form action="{{route('create.post')}}" method="POST" class="p-6 space-y-4">
+                    <form action="{{ route('create.post') }}" method="POST" class="p-6 space-y-4">
                         @csrf
                         <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
 
@@ -92,7 +92,7 @@
                 </div>
             </div>
 
-            <!-- ✅ EDIT POST MODAL -->
+            <!-- EDIT POST MODAL -->
             <div x-show="editModal"
                  class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4"
                  x-transition
@@ -108,7 +108,7 @@
                         </button>
                     </div>
 
-                    <form :action="'/posts/' + editPostId" method="POST" class="p-6 space-y-4">
+                    <form action="{{ route('posts.update', $post->id ?? 0) }}" method="POST" class="p-6 space-y-4">
                         @csrf
                         @method('PUT')
 
@@ -170,7 +170,7 @@
                                  alt="Avatar">
 
                             <div>
-                                <h3 class="font-bold text-gray-900 hover:text-blue-600 transition cursor-pointer">{{ $post->user->name }}</h3>
+                                <h3 class="font-bold text-gray-900">{{ $post->user->name }}</h3>
                                 <p class="text-xs text-gray-500 leading-tight">{{ $post->user->headline }}</p>
                                 <p class="text-[11px] text-gray-400 mt-0.5">
                                     {{ $post->created_at->diffForHumans() }} <span class="mx-0.5">•</span> <i class="fa-solid fa-earth-americas text-[10px]"></i>
@@ -190,7 +190,6 @@
                                      class="absolute right-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-40 text-sm font-normal text-gray-700"
                                      style="display: none;">
 
-                                    <!-- ✅ EDIT BUTTON -->
                                     <button type="button"
                                             @click="
                                                 openMenu = false;
@@ -216,12 +215,93 @@
 
                     <p class="text-sm text-gray-800 leading-relaxed whitespace-pre-line">{{ $post->content }}</p>
 
+                    <!-- POST STATS: Likes & Comments Count -->
+                    <div class="flex items-center gap-4 text-sm text-gray-500">
+                        <span class="flex items-center gap-1">
+                            <i class="fa-regular fa-thumbs-up"></i>
+                            {{ $post->likes()->count() }} likes
+                        </span>
+                        <span class="flex items-center gap-1">
+                            <i class="fa-regular fa-comment"></i>
+                            {{ $post->comments()->count() }} comments
+                        </span>
+                    </div>
+
+                    <!-- COMMENT FORM -->
+                    <div class="mt-3 pt-3 border-t border-gray-100">
+                        <form action="{{ route('create.comment', $post) }}" method="POST" class="flex gap-2">
+                            @csrf
+                            <div class="flex-1 relative">
+                                <input type="text"
+                                       name="content"
+                                       placeholder="Write a comment..."
+                                       class="w-full border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                       maxlength="500"
+                                       required>
+                                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400">
+                                    0/500
+                                </span>
+                            </div>
+                            <button type="submit"
+                                    class="bg-blue-600 text-white px-4 py-2 rounded-full text-sm hover:bg-blue-700 transition flex items-center gap-1">
+                                <i class="fa-regular fa-paper-plane"></i>
+                                <span class="hidden sm:inline">Comment</span>
+                            </button>
+                        </form>
+
+                        @error('content')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+
+                        <!-- EXISTING COMMENTS -->
+                        <div class="mt-3 space-y-3">
+                            @foreach($post->comments as $comment)
+                                <div class="flex items-start gap-2">
+                                    <img src="{{ $comment->user->image_url ?? 'https://via.placeholder.com/150' }}"
+                                         alt="{{ $comment->user->name }}"
+                                         class="w-8 h-8 rounded-full object-cover">
+                                    <div class="flex-1 bg-gray-100 rounded-lg px-3 py-2">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <span class="font-semibold text-sm">{{ $comment->user->name }}</span>
+                                                <span class="text-xs text-gray-500 ml-2">{{ $comment->created_at->diffForHumans() }}</span>
+                                            </div>
+                                            <!-- Delete comment (only for owner) -->
+                                            @if(auth()->check() && auth()->id() === $comment->user_id)
+                                                <form action="{{ route('comments.destroy', $comment) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                            class="text-red-500 hover:text-red-700 text-xs"
+                                                            onclick="return confirm('Delete this comment?')">
+                                                        <i class="fa-regular fa-trash-can"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        </div>
+                                        <p class="text-sm text-gray-800">{{ $comment->content }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+
+                            @if($post->comments->isEmpty())
+                                <p class="text-xs text-gray-400 text-center py-2">No comments yet. Be the first!</p>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- LIKE BUTTON -->
                     <div class="border-t border-gray-100 pt-2 flex justify-around text-gray-500 font-semibold text-sm">
-                        <button class="flex items-center space-x-2 hover:bg-gray-100 py-2 px-3 rounded cursor-pointer transition w-full justify-center">
-                            <i class="fa-regular fa-thumbs-up text-base"></i>
-                            <span>Like</span>
-                        </button>
-                        <button class="flex items-center space-x-2 hover:bg-gray-100 py-2 px-3 rounded cursor-pointer transition w-full justify-center">
+                        <form action="{{ route('likes.toggle', $post) }}" method="POST" class="w-full">
+                            @csrf
+                            <button type="submit"
+                                    class="flex items-center justify-center space-x-2 hover:bg-gray-100 py-2 px-3 rounded cursor-pointer transition w-full
+                                    {{ $post->isLikedByUser() ? 'text-blue-600' : 'text-gray-500' }}">
+                                <i class="{{ $post->isLikedByUser() ? 'fa-solid' : 'fa-regular' }} fa-thumbs-up text-base"></i>
+                                <span>{{ $post->isLikedByUser() ? 'Unlike' : 'Like' }}</span>
+                            </button>
+                        </form>
+                        <button class="flex items-center justify-center space-x-2 hover:bg-gray-100 py-2 px-3 rounded cursor-pointer transition w-full">
                             <i class="fa-regular fa-comment text-base"></i>
                             <span>Comment</span>
                         </button>
@@ -256,7 +336,7 @@
                                     Cancel
                                 </button>
 
-                                <form action="{{route('delete.post',$post->id)}}" method="POST">
+                                <form action="{{ route('delete.post', $post->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
@@ -291,8 +371,30 @@
 
 @push('scripts')
     <script>
-        // Make sure Alpine.js is loaded in your layout
-        // You can add this to your layout if not already present:
-        // <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Character counter for all comment inputs
+            document.querySelectorAll('input[name="content"]').forEach(input => {
+                const counter = input.parentElement.querySelector('.text-gray-400');
+
+                if (counter) {
+                    input.addEventListener('input', function() {
+                        const count = this.value.length;
+                        counter.textContent = count + '/500';
+
+                        if (count > 480) {
+                            counter.classList.add('text-red-500');
+                            counter.classList.remove('text-gray-400');
+                        } else if (count > 450) {
+                            counter.classList.add('text-orange-500');
+                            counter.classList.remove('text-gray-400');
+                        } else {
+                            counter.classList.remove('text-red-500');
+                            counter.classList.remove('text-orange-500');
+                            counter.classList.add('text-gray-400');
+                        }
+                    });
+                }
+            });
+        });
     </script>
 @endpush
