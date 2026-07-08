@@ -18,17 +18,18 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/',[HomeController::class, 'welcome']);
 Route::get('home',[HomeController::class, 'welcome'])->name('home');
-Route::get('feed', [PostController::class, 'index'])->name('feed');
-Route::post('createPost', [PostController::class,'createPost'])->name('create.post');
-Route::delete('deletepost/{id}',[PostController::class,'deletePost'])->name('delete.post');
-Route::put('/posts/{id}', [PostController::class, 'editPost'])->name('posts.update');
-Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('create.comment');
-Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy')->middleware('auth');
-Route::post('/posts/{post}/like', [LikeController::class, 'toggle'])->name('likes.toggle');
-Route::get('/users/{user}', [ProfileController::class, 'show'])->name('profile.show');
-Route::post('/users/{user}/follow', [NetworkController::class, 'follow'])->name('follow');
-Route::post('/users/{user}/unfollow', [NetworkController::class, 'unfollow'])->name('unfollow');
+Route::get('feed', [PostController::class, 'index'])->name('feed')->middleware('auth');
 
-Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-Route::post('/profile/image', [ProfileController::class, 'uploadImage'])->name('profile.image.upload');
+Route::post('createPost', [PostController::class,'createPost'])->name('create.post')->middleware('auth');
+Route::delete('deletepost/{id}',[PostController::class,'deletePost'])->name('delete.post')->middleware('auth');
+Route::put('/posts/{id}', [PostController::class, 'editPost'])->name('posts.update')->middleware('auth');
+Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('create.comment')->middleware('auth');
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy')->middleware('auth');
+Route::post('/posts/{post}/like', [LikeController::class, 'toggle'])->name('likes.toggle')->middleware('auth');
+Route::get('/users/{user}', [ProfileController::class, 'show'])->name('profile.show')->middleware('auth');
+Route::post('/users/{user}/follow', [NetworkController::class, 'follow'])->name('follow')->middleware('auth');
+Route::post('/users/{user}/unfollow', [NetworkController::class, 'unfollow'])->name('unfollow')->middleware('auth');
+
+Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit')->middleware('auth');
+Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
+Route::post('/profile/image', [ProfileController::class, 'uploadImage'])->name('profile.image.upload')->middleware('auth');
