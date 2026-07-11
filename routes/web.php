@@ -29,7 +29,7 @@ Route::post('/posts/{post}/like', [LikeController::class, 'toggle'])->name('like
 Route::post('/users/{user}/follow', [NetworkController::class, 'follow'])->name('follow')->middleware('auth');
 Route::post('/users/{user}/unfollow', [NetworkController::class, 'unfollow'])->name('unfollow')->middleware('auth');
 
+Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit')->middleware('auth');
 Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show')->middleware('auth');
-Route::get('/profile/edit/{user}', [ProfileController::class, 'edit'])->name('profile.edit')->middleware('auth');
 Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
 Route::post('/profile/image', [ProfileController::class, 'uploadImage'])->name('profile.image.upload')->middleware('auth');

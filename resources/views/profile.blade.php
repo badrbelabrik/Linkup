@@ -39,7 +39,7 @@
                         @auth
                             @if(auth()->id() === $user->id)
                                 <!-- ✅ EDIT PROFILE BUTTON - Moved here -->
-                                <a href="{{ route('profile.edit',Auth()->user()) }}"
+                                <a href="{{ route('profile.edit') }}"
                                    class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full text-sm font-semibold transition flex items-center gap-2 shadow-sm hover:shadow-md">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                     Edit Profile
