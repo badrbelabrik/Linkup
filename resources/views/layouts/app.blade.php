@@ -58,10 +58,10 @@
                      class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-50 text-sm font-normal text-gray-700"
                      style="display: none;">
 
-                    <div class="px-4 py-2 border-b border-gray-100">
-                        <p class="font-semibold text-gray-900">John Doe</p>
-                        <p class="text-xs text-gray-400 truncate">john.doe@example.com</p>
-                    </div>
+                    <a class="nav-link" href="{{ route('profile.show', auth()->user()) }}">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
 
                     <a href="#" class="block px-4 py-2 hover:bg-gray-100 text-left transition">View Profile</a>
                     <a href="#" class="block px-4 py-2 hover:bg-gray-100 text-left transition">Settings & Privacy</a>

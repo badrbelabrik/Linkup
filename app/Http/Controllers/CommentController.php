@@ -26,7 +26,6 @@ class CommentController extends Controller
 
     public function destroy(Comment $comment)
     {
-        // Check if user owns the comment
         if (Auth::id() !== $comment->user_id) {
             abort(403, 'You are not authorized to delete this comment.');
         }

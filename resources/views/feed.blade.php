@@ -170,7 +170,7 @@
                                  alt="Avatar">
 
                             <div>
-                                <h3 class="font-bold text-gray-900">{{ $post->user->name }}</h3>
+                                <a href="{{route('profile.show',$post->user)}}"><h3 class="font-bold text-gray-900">{{ $post->user->name }}</h3></a>
                                 <p class="text-xs text-gray-500 leading-tight">{{ $post->user->headline }}</p>
                                 <p class="text-[11px] text-gray-400 mt-0.5">
                                     {{ $post->created_at->diffForHumans() }} <span class="mx-0.5">•</span> <i class="fa-solid fa-earth-americas text-[10px]"></i>
