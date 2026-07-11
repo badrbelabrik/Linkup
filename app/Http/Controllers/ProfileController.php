@@ -15,19 +15,16 @@ class ProfileController extends Controller
      */
     public function show(User $user)
     {
-        // Get user's posts with eager loading for performance
         $posts = Post::where('user_id', $user->id)
             ->with(['user', 'likes', 'comments'])
             ->latest()
             ->paginate(10);
 
-        // Check if current user is following this user
         $isFollowing = false;
         if (Auth::check() && Auth::id() !== $user->id) {
             $isFollowing = Auth::user()->isFollowing($user);
         }
 
-        // Get counts for stats
         $postsCount = $user->posts()->count();
         $followersCount = $user->followers()->count();
         $followingCount = $user->following()->count();

@@ -26,10 +26,10 @@ Route::put('/posts/{id}', [PostController::class, 'editPost'])->name('posts.upda
 Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('create.comment')->middleware('auth');
 Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy')->middleware('auth');
 Route::post('/posts/{post}/like', [LikeController::class, 'toggle'])->name('likes.toggle')->middleware('auth');
-Route::get('/users/{user}', [ProfileController::class, 'show'])->name('profile.show')->middleware('auth');
 Route::post('/users/{user}/follow', [NetworkController::class, 'follow'])->name('follow')->middleware('auth');
 Route::post('/users/{user}/unfollow', [NetworkController::class, 'unfollow'])->name('unfollow')->middleware('auth');
 
-Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit')->middleware('auth');
+Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show')->middleware('auth');
+Route::get('/profile/edit/{user}', [ProfileController::class, 'edit'])->name('profile.edit')->middleware('auth');
 Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
 Route::post('/profile/image', [ProfileController::class, 'uploadImage'])->name('profile.image.upload')->middleware('auth');

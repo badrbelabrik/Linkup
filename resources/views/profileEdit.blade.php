@@ -26,7 +26,7 @@
                 <p class="text-sm text-gray-500 mt-1">Update your professional information</p>
             </div>
 
-            <form action="{{ route('profile.update') }}" method="POST" class="p-6">
+            <form action="{{ route('profile.update')}}" method="POST" class="p-6">
                 @csrf
                 @method('PUT')
 
@@ -95,32 +95,6 @@
                         <i class="fa-regular fa-info-circle mr-1"></i>
                         Enter a direct URL to your profile image (e.g., from Gravatar or Imgur)
                     </p>
-                </div>
-
-                <!-- Image Upload (Alternative) -->
-                <div class="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">
-                        <i class="fa-regular fa-image mr-1"></i>
-                        Or Upload an Image
-                    </label>
-                    <form action="{{ route('profile.image.upload') }}" method="POST" enctype="multipart/form-data" class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-                        @csrf
-                        <div class="flex-1 w-full">
-                            <input type="file"
-                                   name="image"
-                                   accept="image/*"
-                                   class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                            <p class="text-xs text-gray-400 mt-1">Supported: JPG, PNG, GIF (Max 2MB)</p>
-                        </div>
-                        <button type="submit"
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition whitespace-nowrap">
-                            <i class="fa-regular fa-upload mr-1"></i>
-                            Upload
-                        </button>
-                    </form>
-                    @error('image')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
                 </div>
 
                 <!-- Submit Buttons -->
