@@ -25,7 +25,7 @@ class Post extends Model
 
     public function comments(): HasMany
     {
-        return $this->hasMany(Comment::class)->latest();
+        return $this->hasMany(Comment::class, )->latest();
     }
 
     public function likes(): BelongsToMany
